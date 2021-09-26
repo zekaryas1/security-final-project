@@ -97,9 +97,16 @@ export default class ComplaintsController {
         "=",
         "complainttype.id"
       )
+      .join("users", "complaints.userId", "=", "users.id")
       .select("complaints.*")
       .select("complainttype.name")
+      .select(
+        "users.name as username",
+        "users.id as userId",
+        "users.blocked as blocked"
+      )
       .whereNot("userId", auth.user!.id);
+    console.log(allComplaints);
 
     return view.render("complaint/monitor", {
       complaints: allComplaints,

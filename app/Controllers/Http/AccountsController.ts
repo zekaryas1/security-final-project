@@ -1,8 +1,8 @@
 // import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
+import Hash from "@ioc:Adonis/Core/Hash";
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import Database from "@ioc:Adonis/Lucid/Database";
-import Hash from "@ioc:Adonis/Core/Hash";
 
 export default class AccountsController {
   public async loginPage({ view }: HttpContextContract) {
@@ -51,5 +51,29 @@ export default class AccountsController {
   public async logout({ auth, response }: HttpContextContract) {
     await auth.use("web").logout();
     response.redirect("/");
+  }
+
+  public async blockUser({
+    request,
+    auth,
+    response,
+    params,
+  }: HttpContextContract) {
+    const id = await Database.from("users").where("id", params.userId).update({
+      blocked: true,
+    });
+    return response.redirect("/complaint");
+  }
+
+  public async unblockUser({
+    request,
+    auth,
+    response,
+    params,
+  }: HttpContextContract) {
+    const id = await Database.from("users").where("id", params.userId).update({
+      blocked: false,
+    });
+    return response.redirect("/complaint");
   }
 }

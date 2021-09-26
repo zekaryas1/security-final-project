@@ -29,15 +29,20 @@ Route.group(() => {
   Route.post("/logout", "AccountsController.logout");
 });
 
-Route.get("complaint/monitor", "ComplaintsController.monitorPage").middleware([
-  "auth",
-  "isAdmin",
-]);
+Route.group(() => {
+  Route.get("complaint/monitor", "ComplaintsController.monitorPage");
+  Route.post("account/block/:userId", "AccountsController.blockUser");
+  Route.post("account/unblock/:userId", "AccountsController.unblockUser");
+}).middleware(["auth", "isAdmin", "blocked"]);
 
 Route.group(() => {
   Route.resource("complaint", "ComplaintsController");
-}).middleware("auth");
+}).middleware(["auth", "blocked"]);
 
 Route.get("/404", async ({ view }) => {
   return view.render("errors/not-found");
+});
+
+Route.get("/403", async ({ view }) => {
+  return view.render("errors/unauthorized");
 });

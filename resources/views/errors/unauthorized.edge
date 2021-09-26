@@ -1,1 +1,24 @@
-<p> It's a 403 </p>
+@layout('layouts/main')
+@set('title', 'Fobiden action')
+
+@section('style')
+  <style>
+     .cardContainer{
+         display: flex;
+         flex-direction: column;
+         justify-content: center;
+         align-items: center;
+         height: 80vh;
+     }
+  </style>
+@end
+
+@section('body')
+    <div class="cardContainer">
+        <h2> Your account has been Blocked! </h2>
+        <p>Check back with the adminstrator for more and why.</p>
+    </div>
+@end
+
+
+

@@ -33,9 +33,17 @@
                          <form method="POST" action="/complaint/{{complaint.id}}?_method=DELETE">
                               <input class="btn btn-outline-primary mx-2" type="submit" value="delete">
                          </form>
-                         <form method="POST" action="/complaint/{{complaint.id}}">
-                              <input class="text-primary btn btn-light" type="submit" value="block">
-                         </form>
+                         
+                              @if(complaint.blocked == 1)
+                                   <form method="POST" action="/account/unblock/{{complaint.userId}}">
+                                        <input class="text-primary btn btn-light" type="submit" value="Unblock {{ complaint.username }}">
+                                   </form>
+                              @else
+                                   <form method="POST" action="/account/block/{{complaint.userId}}">
+                                        <input class="text-primary btn btn-light" type="submit" value="Block {{ complaint.username }}">
+                                   </form>
+                              @endif
+                         
                    </div>   
                </div>
              @end
