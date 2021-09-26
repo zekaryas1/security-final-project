@@ -3,14 +3,16 @@
 
 @section('style')
  <style>
-    .cardContainer{
-             width: 400px;
-             margin: auto;
-             display: flex;
-             flex-direction: column;
-             justify-content: center;
-             align-items: center;
-         }
+    .cardContainer {
+  width: 400px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
  </style>
 @end
 
@@ -27,12 +29,14 @@
                    <a class="text fs-3 fw-bolder text-decoration-none">{{ complaint.name.toUpperCase() }}</a>
                    <p class="text-gray"> {{ complaint.updated_at }} </p>
                    <p>{{ complaint.comment }}</p>
-                   <form method="POST" action="/complaint/{{complaint.id}}?_method=DELETE">
-                        <input class="float-end text-primary btn btn-light" type="submit" value="delete">
-                   </form>
-                   <form method="POST" action="/complaint/{{complaint.id}}">
-                        <input class="float-end text-primary btn btn-light" type="submit" value="block">
-                   </form>
+                   <div class="d-flex justify-content-end">
+                         <form method="POST" action="/complaint/{{complaint.id}}?_method=DELETE">
+                              <input class="btn btn-outline-primary mx-2" type="submit" value="delete">
+                         </form>
+                         <form method="POST" action="/complaint/{{complaint.id}}">
+                              <input class="text-primary btn btn-light" type="submit" value="block">
+                         </form>
+                   </div>   
                </div>
              @end
         </div>
