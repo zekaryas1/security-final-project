@@ -1,1 +1,26 @@
-<p> It's a 404 </p>
+@layout('layouts/main')
+@set('title', 'Unknown destination')
+
+@section('style')
+  <style>
+     .cardContainer{
+         display: flex;
+         flex-direction: column;
+         justify-content: center;
+         align-items: center;
+         height: 80vh;
+     }
+  </style>
+@end
+
+@section('body')
+    <div class="cardContainer">
+        <h2> It's a 404 </h2>
+        <p>Click back to go back to previous destination</p>
+    </div>
+
+
+@end
+
+
+

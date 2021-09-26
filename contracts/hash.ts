@@ -15,5 +15,11 @@ declare module '@ioc:Adonis/Core/Hash' {
       config: ArgonConfig,
       implementation: ArgonContract,
     },
+    MyHashDriver: {
+      config: {
+        driver: 'MyHashDriver'
+      }
+      implementation: ArgonContract
+    }
   }
 }

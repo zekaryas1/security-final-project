@@ -1,1 +1,39 @@
-<h1>Complaints edit {{ id }}</h1>
+@layout('layouts/main')
+@set('title', 'Manage')
+
+@section('style')
+  <style>
+
+  </style>
+@end
+
+@section('body')
+    <div class="cardContainer">
+        <div class="card p-4 bg-light">
+            <form method="POST" action="{{
+                      route('ComplaintsController.update', { id: complaintToEdit.id }, {
+                        qs: {
+                          _method: 'PUT'
+                        }
+                      })
+                    }}">
+              <h2>Edit or delete your complaints</h2>
+              <hr>
+              <input class="form-control mb-3" type="text" name="comment" placeholder="Comment *" value="{{ complaintToEdit.comment }}"  required>
+              <select class="form-select mb-3" value="{{ complaintToEdit.complaintTypeId }}" name="complaintTypeId">
+                @each(type in types)
+                   <option value="{{ type.id }}">{{ type.name }}</option>
+                @end
+              </select>
+              <input class="form-control mb-3" type="file" value="{{ complaintToEdit.fileName }}" name="fileName">
+              <input class="form-control mb-3" type="text" placeholder="Location" name="location" value="{{ complaintToEdit.location }}">
+              <input type="submit" class="button btn-primary w-100 mb-2" value="Edit">
+
+            </form>
+            <form method="POST" action="/complaint/{{complaintToEdit.id}}?_method=DELETE">
+                <input class="float-end text-primary btn btn-light" type="submit" value="delete">
+            </form>
+          </div>
+    </div>
+@end
+

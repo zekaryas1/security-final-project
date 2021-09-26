@@ -1,5 +1,5 @@
 @layout('layouts/main')
-@set('title', 'Your complaints')
+@set('title', 'Monitor')
 
 @section('style')
  <style>
@@ -17,17 +17,22 @@
 @section('body')
         @if(complaints.length == 0)
           <div class="cardContainer">
-                  <h3> You have zero complaints: Click send to start</h3>
-                  <a class="button btn-primary mb-2 w-100" href="/complaint/create">Send</a>
+                  <h3> You have zero complaints to monitor</h3>
            </div>
         @endif
 
         <div class="cards m-4">
              @each(complaint in complaints)
                <div class="card bg-light">
-                   <a href="/complaint/{{ complaint.id }}/edit" class="text fs-3 fw-bolder text-decoration-none">{{ complaint.name.toUpperCase() }}</a>
+                   <a class="text fs-3 fw-bolder text-decoration-none">{{ complaint.name.toUpperCase() }}</a>
                    <p class="text-gray"> {{ complaint.updated_at }} </p>
                    <p>{{ complaint.comment }}</p>
+                   <form method="POST" action="/complaint/{{complaint.id}}?_method=DELETE">
+                        <input class="float-end text-primary btn btn-light" type="submit" value="delete">
+                   </form>
+                   <form method="POST" action="/complaint/{{complaint.id}}">
+                        <input class="float-end text-primary btn btn-light" type="submit" value="block">
+                   </form>
                </div>
              @end
         </div>

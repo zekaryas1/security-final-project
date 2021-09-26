@@ -1,0 +1,36 @@
+@layout('layouts/main')
+@set('title', 'Login')
+
+@section('style')
+  <style>
+     .cardContainer{
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         height: 80vh;
+     }
+  </style>
+@end
+
+@section('body')
+    <div class="cardContainer">
+        <div class="card p-4 bg-light">
+            <form method="POST" action="/login">
+              <h2> Login to your account</h2>
+              @if(loginError)
+                 <span class="text-danger"> {{ loginError }}</span>
+              @end
+
+              <hr>
+              <input class="form-control mb-4" type="email" name="email" placeholder="email"  required>
+
+              <input class="form-control mb-4" type="password" name="password" placeholder="password">
+
+              <input type="submit" class="button btn-primary w-100" value="Login">
+            </form>
+
+            <a href="/register" class="text-decoration-none mt-2 d-flex flex-row-reverse">Create account</p>
+          </div>
+    </div>
+@end
+

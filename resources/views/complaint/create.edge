@@ -1,1 +1,30 @@
-<h1>Complaints create</h1>
+@layout('layouts/main')
+@set('title', 'Create')
+
+@section('style')
+  <style>
+
+  </style>
+@end
+
+@section('body')
+    <div class="cardContainer">
+        <div class="card p-4 bg-light">
+            <form action="/complaint" method="post">
+              <h2>Send us your thoughts</h2>
+              <hr>
+              <input class="form-control mb-3" type="text" name="comment" placeholder="Comment *" required>
+              <select class="form-select mb-3" name="complaintTypeId">
+                  @each(type in types)
+                    <option value="{{ type.id }}">{{ type.name }}</option>
+                  @end
+              </select>
+              <input class="form-control mb-3" type="file" name="fileName">
+              <input class="form-control" type="text" placeholder="Location" name="location">
+              <input type="submit" class="button btn-primary w-100 mt-3" value="Send">
+            </form>
+
+          </div>
+    </div>
+@end
+
