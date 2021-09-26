@@ -2,6 +2,7 @@
 
 import Hash from "@ioc:Adonis/Core/Hash";
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
+import { rules, schema } from "@ioc:Adonis/Core/Validator";
 import Database from "@ioc:Adonis/Lucid/Database";
 
 export default class AccountsController {
@@ -10,15 +11,24 @@ export default class AccountsController {
   }
 
   public async login({ view, request, response, auth }: HttpContextContract) {
-    const email = request.input("email");
-    const password = request.input("password");
+    const loginSchema = schema.create({
+      email: schema.string({ trim: true }, [rules.email(), rules.required()]),
+      password: schema.string({ trim: true }, [
+        rules.minLength(6),
+        rules.required(),
+      ]),
+    });
+
+    const payload = await request.validate({
+      schema: loginSchema,
+    });
 
     try {
-      await auth.use("web").attempt(email, password);
+      await auth.use("web").attempt(payload.email, payload.password);
       response.redirect("/complaint");
-    } catch {
+    } catch (error) {
       return view.render("account/login", {
-        loginError: "Invalid credential",
+        loginError: "Invalid credentials",
       });
     }
   }
@@ -33,7 +43,21 @@ export default class AccountsController {
     auth,
     response,
   }: HttpContextContract) {
-    const user = request.body();
+    const registerationSchema = schema.create({
+      name: schema.string({}, [rules.required()]),
+      email: schema.string({ trim: true }, [rules.email(), rules.required()]),
+      password: schema.string({ trim: true }, [
+        rules.minLength(6),
+        rules.required(),
+        rules.confirmed(),
+      ]),
+    });
+
+    const payload = await request.validate({
+      schema: registerationSchema,
+    });
+
+    const user = { ...payload, id: "" };
     user.password = await Hash.make(user.password);
 
     const id = await Database.table("users").returning("id").insert(user);
@@ -59,9 +83,12 @@ export default class AccountsController {
     response,
     params,
   }: HttpContextContract) {
-    const id = await Database.from("users").where("id", params.userId).update({
-      blocked: true,
-    });
+    const id = await Database.from("users")
+      .where("id", params.userId)
+      .whereNot("role", "Admin")
+      .update({
+        blocked: true,
+      });
     return response.redirect("/complaint");
   }
 
@@ -71,9 +98,12 @@ export default class AccountsController {
     response,
     params,
   }: HttpContextContract) {
-    const id = await Database.from("users").where("id", params.userId).update({
-      blocked: false,
-    });
+    const id = await Database.from("users")
+      .where("id", params.userId)
+      .whereNot("role", "Admin")
+      .update({
+        blocked: false,
+      });
     return response.redirect("/complaint");
   }
 }

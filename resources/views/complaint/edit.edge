@@ -19,14 +19,30 @@
                     }}">
               <h2>Edit or delete your complaints</h2>
               <hr>
+
+              @if(flashMessages.has('errors.comment'))
+                <p class="text-danger"> {{ flashMessages.get('errors.comment') }} </p>
+              @end
               <input class="form-control mb-3" type="text" name="comment" placeholder="Comment *" value="{{ complaintToEdit.comment }}"  required>
-              <select class="form-select mb-3" value="{{ complaintToEdit.complaintTypeId }}" name="complaintTypeId">
+              
+              @if(flashMessages.has('errors.complaintTypeId'))
+                <p class="text-danger"> {{ flashMessages.get('errors.complaintTypeId') }} </p>
+              @end
+              <select class="form-select mb-3" value="{{ complaintToEdit.complaintTypeId }}" name="complaintTypeId" required>
                 @each(type in types)
                    <option value="{{ type.id }}">{{ type.name }}</option>
                 @end
               </select>
-              <input class="form-control mb-3" type="file" value="{{ complaintToEdit.fileName }}" name="fileName">
-              <input class="form-control mb-3" type="text" placeholder="Location" name="location" value="{{ complaintToEdit.location }}">
+
+              @if(flashMessages.has('errors.fileName'))
+                <p class="text-danger"> {{ flashMessages.get('errors.fileName') }} </p>
+              @end
+              <input class="form-control mb-3" type="file" placeholder="fileName (optional)" value="{{ complaintToEdit.fileName }}" name="fileName">
+              
+              @if(flashMessages.has('errors.location'))
+                <p class="text-danger"> {{ flashMessages.get('errors.location') }} </p>
+              @end
+              <input class="form-control mb-3" type="text" placeholder="Location (optional)" name="location" value="{{ complaintToEdit.location }}">
               <input type="submit" class="button btn-primary w-100 mb-2" value="Edit">
 
             </form>

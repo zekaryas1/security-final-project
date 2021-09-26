@@ -1,4 +1,5 @@
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
+import { rules, schema } from "@ioc:Adonis/Core/Validator";
 import Database from "@ioc:Adonis/Lucid/Database";
 
 export default class ComplaintsController {
@@ -45,7 +46,21 @@ export default class ComplaintsController {
   }
 
   public async store({ request, response, auth }: HttpContextContract) {
-    const newComplaints = request.body();
+    const cstoreSchema = schema.create({
+      comment: schema.string({ trim: true }, [rules.required()]),
+      complaintTypeId: schema.number([rules.required()]),
+      location: schema.string.optional({ trim: true }),
+      fileName: schema.file.optional({
+        size: "2mb",
+        extnames: ["pdf"],
+      }),
+    });
+
+    const payload = await request.validate({
+      schema: cstoreSchema,
+    });
+
+    const newComplaints = { ...payload, userId: "" };
     newComplaints.userId = auth.user!.id;
     console.log(newComplaints);
     const id = await Database.table("complaints")
@@ -61,7 +76,21 @@ export default class ComplaintsController {
     response,
     auth,
   }: HttpContextContract) {
-    const updateResponse = request.body();
+    const cUpdateSchema = schema.create({
+      comment: schema.string({ trim: true }, [rules.required()]),
+      complaintTypeId: schema.number([rules.required()]),
+      location: schema.string.optional({ trim: true }),
+      fileName: schema.file.optional({
+        size: "2mb",
+        extnames: ["pdf"],
+      }),
+    });
+
+    const payload = await request.validate({
+      schema: cUpdateSchema,
+    });
+
+    const updateResponse = { ...payload };
     console.log(updateResponse);
 
     const id = await Database.from("complaints")

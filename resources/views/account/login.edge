@@ -18,13 +18,19 @@
             <form method="POST" action="/login">
               <h2> Login to your account</h2>
               @if(loginError)
-                 <span class="text-danger"> {{ loginError }}</span>
-              @end
-
+                <p class="text-danger"> {{ loginError }}</p>
+              @endif
               <hr>
-              <input class="form-control mb-4" type="email" name="email" placeholder="email"  required>
 
-              <input class="form-control mb-4" type="password" name="password" placeholder="password">
+              @if(flashMessages.has('errors.email'))
+                <p class="text-danger"> {{ flashMessages.get('errors.email') }} </p>
+              @end
+              <input class="form-control mb-4" type="email" name="email" placeholder="email *"  required>
+
+              @if(flashMessages.has('errors.password'))
+                <p class="text-danger"> {{ flashMessages.get('errors.password') }} </p>
+              @end
+              <input class="form-control mb-4" type="password" name="password" placeholder="password *" required>
 
               <input type="submit" class="button btn-primary w-100" value="Login">
             </form>
