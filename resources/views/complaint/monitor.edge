@@ -45,16 +45,19 @@
                               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                 <li>
                                    <form method="POST" action="/complaint/{{complaint.id}}?_method=DELETE">
+                                        {{ csrfField() }}
                                         <input class="dropdown-item" type="submit" value="delete">
                                    </form>
                                 </li>
                                 <li>
                                    @if(complaint.blocked == 1)
                                         <form method="POST" action="/account/unblock/{{complaint.userId}}">
+                                             {{ csrfField() }}
                                              <input class="dropdown-item" type="submit" value="Unblock {{ complaint.username }}">
                                         </form>
                                    @else
                                         <form method="POST" action="/account/block/{{complaint.userId}}">
+                                             {{ csrfField() }}
                                              <input class="dropdown-item" type="submit" value="Block {{ complaint.username }}">
                                         </form>
                                    @endif

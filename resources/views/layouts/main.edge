@@ -145,8 +145,7 @@
               type="button"
               id="dropdownMenuButton1"
               data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
+              aria-expanded="false">
               {{ auth.user.name }}
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -162,6 +161,7 @@
               @endif
               <li>
                 <form method="POST" action="/logout">
+                  {{ csrfField() }}
                   <input type="submit" class="dropdown-item" value="Logout" />
                 </form>
               </li>

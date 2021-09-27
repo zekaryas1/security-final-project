@@ -16,6 +16,8 @@
     <div class="cardContainer">
         <div class="card p-4 bg-light">
             <form method="POST" action="/login">
+              {{ csrfField() }}
+              
               <h2> Login to your account</h2>
               @if(loginError)
                 <p class="text-danger"> {{ loginError }}</p>
