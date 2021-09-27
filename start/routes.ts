@@ -37,6 +37,7 @@ Route.group(() => {
 
 Route.group(() => {
   Route.resource("complaint", "ComplaintsController");
+  Route.get("/download/:fileName", "AccountsController.download");
 }).middleware(["auth", "blocked"]);
 
 Route.get("/404", async ({ view }) => {

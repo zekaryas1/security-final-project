@@ -29,22 +29,39 @@
                    <a class="text fs-3 fw-bolder text-decoration-none">{{ complaint.name.toUpperCase() }}</a>
                    <p class="text-gray"> {{ complaint.updated_at }} </p>
                    <p>{{ complaint.comment }}</p>
-                   <div class="d-flex justify-content-end">
-                         <form method="POST" action="/complaint/{{complaint.id}}?_method=DELETE">
-                              <input class="btn btn-outline-primary mx-2" type="submit" value="delete">
-                         </form>
-                         
-                              @if(complaint.blocked == 1)
-                                   <form method="POST" action="/account/unblock/{{complaint.userId}}">
-                                        <input class="text-primary btn btn-light" type="submit" value="Unblock {{ complaint.username }}">
+                    <div class="d-flex justify-content-end">
+                         @if(complaint.fileName)  
+                              <a class="text-decoration-none text-primary btn" href="/download/{{ complaint.fileName }}">Download file</a>
+                          @endif
+                          <span class="dropdown">
+                              <button
+                                class="btn text-primary dropdown-toggle"
+                                type="button"
+                                id="dropdownMenuButton1"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                More
+                              </button>
+                              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li>
+                                   <form method="POST" action="/complaint/{{complaint.id}}?_method=DELETE">
+                                        <input class="dropdown-item" type="submit" value="delete">
                                    </form>
-                              @else
-                                   <form method="POST" action="/account/block/{{complaint.userId}}">
-                                        <input class="text-primary btn btn-light" type="submit" value="Block {{ complaint.username }}">
-                                   </form>
-                              @endif
-                         
-                   </div>   
+                                </li>
+                                <li>
+                                   @if(complaint.blocked == 1)
+                                        <form method="POST" action="/account/unblock/{{complaint.userId}}">
+                                             <input class="dropdown-item" type="submit" value="Unblock {{ complaint.username }}">
+                                        </form>
+                                   @else
+                                        <form method="POST" action="/account/block/{{complaint.userId}}">
+                                             <input class="dropdown-item" type="submit" value="Block {{ complaint.username }}">
+                                        </form>
+                                   @endif
+                                </li>
+                              </ul>
+                            </span>
+                    </div>  
                </div>
              @end
         </div>

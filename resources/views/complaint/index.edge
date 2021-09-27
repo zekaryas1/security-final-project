@@ -28,6 +28,9 @@
                    <a href="/complaint/{{ complaint.id }}/edit" class="text fs-3 fw-bolder text-decoration-none">{{ complaint.name.toUpperCase() }}</a>
                    <p class="text-gray"> {{ complaint.updated_at }} </p>
                    <p>{{ complaint.comment }}</p>
+                   @if(complaint.fileName)  
+                        <a class="d-flex justify-content-end text-decoration-none" href="/download/{{ complaint.fileName }}">Download file</a>
+                   @endif
                </div>
              @end
         </div>

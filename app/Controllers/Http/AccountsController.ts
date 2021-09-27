@@ -1,5 +1,6 @@
 // import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
+import Drive from "@ioc:Adonis/Core/Drive";
 import Hash from "@ioc:Adonis/Core/Hash";
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import { rules, schema } from "@ioc:Adonis/Core/Validator";
@@ -105,5 +106,21 @@ export default class AccountsController {
         blocked: false,
       });
     return response.redirect("/complaint");
+  }
+
+  public async download({ auth, params, response }: HttpContextContract) {
+    if (auth.user!.role == "Admin") {
+      return response.redirect(await Drive.getUrl(params.fileName));
+    } else {
+      const id = await Database.from("complaints")
+        .where("fileName", params.fileName)
+        .where("userId", auth.user!.id)
+        .first();
+      if (id) {
+        return response.redirect(await Drive.getUrl(params.fileName));
+      } else {
+        return response.redirect("/404");
+      }
+    }
   }
 }
